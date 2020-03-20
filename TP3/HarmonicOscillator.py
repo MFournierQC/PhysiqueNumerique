@@ -1,8 +1,7 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 
-class harmonicOscillator:
+class HarmonicOscillator:
     def __init__(self, omega, start, end):
         self.omega = omega
         self.start = start
@@ -29,19 +28,3 @@ class harmonicOscillator:
             k4 = h * self.coupledEquation(x + k3, t)
             x += (k1 + 2 * k2 + 2 * k3 + k4) / 6
         return tpoints, xValues
-
-
-if __name__ == '__main__':
-    oscillator = harmonicOscillator(1, 0, 50)
-    tpoints, xValues = oscillator.methodRK4(1000)
-
-    plt.subplot(2, 1, 1)
-    plt.plot(tpoints, xValues)
-    plt.ylabel('ODE')
-
-    plt.subplot(2, 1, 2)
-    plt.plot(tpoints, np.cos(tpoints))
-    plt.ylabel('Analytical Solution')
-    plt.xlabel('t')
-    plt.show()
-
