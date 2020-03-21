@@ -1,5 +1,6 @@
 from TP3.HarmonicOscillator import HarmonicOscillator
 from TP3.AnharmonicOscillator import AnharmonicOscillator
+from TP3.VanDerPolOscillator import VanDerPolOscillator
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -8,13 +9,13 @@ if __name__ == '__main__':
     oscillator = HarmonicOscillator(1, 0, 50)
 
     # Sous question a :
-    tpoints, xValues, sValues = oscillator.methodRK4(1000, 1.0, 0.0)
+    tPoints, xValues, sValues = oscillator.methodRK4(1000, 1.0, 0.0)
     plt.subplot(2, 1, 1)
-    plt.plot(tpoints, xValues)
+    plt.plot(tPoints, xValues)
     plt.ylabel('ODE')
 
     plt.subplot(2, 1, 2)
-    plt.plot(tpoints, np.cos(tpoints))
+    plt.plot(tPoints, np.cos(tPoints))
     plt.ylabel('Analytical Solution')
     plt.xlabel('t')
     plt.show()
@@ -23,8 +24,8 @@ if __name__ == '__main__':
     origins = [0.0, 0.5, 1.0, 1.5, 2.0]
     for origin in origins:
         label = 'x(0)={}'.replace('{}', str(origin))
-        tpoints, xValues, sValues= oscillator.methodRK4(1000, origin, 0.0)
-        plt.plot(tpoints, xValues, label=label)
+        tPoints, xValues, sValues= oscillator.methodRK4(1000, origin, 0.0)
+        plt.plot(tPoints, xValues, label=label)
     plt.ylabel('ODE')
     plt.xlabel('t')
     plt.legend()
@@ -35,8 +36,8 @@ if __name__ == '__main__':
     origins = [0.0, 1.0, 2.0]
     for origin in origins:
         label = 'x(0)={}'.replace('{}', str(origin))
-        tpoints, xValues, sValues = aOscillator.methodRK4(1000, origin, 0.0)
-        plt.plot(tpoints, xValues, label=label)
+        tPoints, xValues, sValues = aOscillator.methodRK4(1000, origin, 0.0)
+        plt.plot(tPoints, xValues, label=label)
     plt.ylabel('ODE')
     plt.xlabel('t')
     plt.legend()
@@ -47,7 +48,7 @@ if __name__ == '__main__':
     plt.subplot(2, 1, 1)
     for origin in origins:
         label = 'x(0)={}'.replace('{}', str(origin))
-        tpoints, xValues, sValues = oscillator.methodRK4(1000, origin, 0.0)
+        tPoints, xValues, sValues = oscillator.methodRK4(1000, origin, 0.0)
         plt.plot(xValues, sValues, label=label)
     plt.ylabel('Harmonic ODE')
     plt.legend()
@@ -55,7 +56,7 @@ if __name__ == '__main__':
     plt.subplot(2, 1, 2)
     for origin in origins:
         label = 'x(0)={}'.replace('{}', str(origin))
-        tpoints, xValues, sValues = aOscillator.methodRK4(1000, origin, 0.0)
+        tPoints, xValues, sValues = aOscillator.methodRK4(1000, origin, 0.0)
         plt.plot(xValues, sValues, label=label)
     plt.ylabel('Anharmonic ODE')
     plt.xlabel('x')
@@ -65,7 +66,7 @@ if __name__ == '__main__':
     plt.subplot(2, 1, 1)
     for origin in origins:
         label = r'$\dot{x}(0)$={}'.replace('{}', str(origin))
-        tpoints, xValues, sValues = oscillator.methodRK4(1000, 1.0, origin)
+        tPoints, xValues, sValues = oscillator.methodRK4(1000, 1.0, origin)
         plt.plot(xValues, sValues, label=label)
     plt.ylabel('Harmonic ODE')
     plt.legend()
@@ -73,9 +74,18 @@ if __name__ == '__main__':
     plt.subplot(2, 1, 2)
     for origin in origins:
         label = r'$\dot{x}(0)$={}'.replace('{}', str(origin))
-        tpoints, xValues, sValues = aOscillator.methodRK4(1000, 1.0, origin)
+        tPoints, xValues, sValues = aOscillator.methodRK4(1000, 1.0, origin)
         plt.plot(xValues, sValues, label=label)
     plt.ylabel('Anharmonic ODE')
     plt.xlabel('x')
     plt.legend()
+    plt.show()
+
+    # Sous question e :
+    vdpOscillator = VanDerPolOscillator(1)
+    initialState = np.array([0.5, 0.0], float)
+    tPoints, fx1Points, fx2Points = vdpOscillator.methodRK45(initialState)
+
+    plt.plot(tPoints, fx1Points)
+    plt.plot(tPoints, fx2Points)
     plt.show()
