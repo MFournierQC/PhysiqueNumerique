@@ -14,11 +14,11 @@ class HarmonicOscillator:
         fx2 = -(self.omega ** 2) * x1
         return np.array([fx1, fx2], float)
 
-    def methodRK4(self, n, t=0):
+    def methodRK4(self, n, x1=0, x2=0, t=0):
         h = (self.end - self.start) / n
         tpoints = np.arange(self.start, self.end, h)
         xValues = []
-        x = np.array([1.0, 0.0], float)
+        x = np.array([x1, x2], float)
 
         for t in tpoints:
             xValues.append(x[0])
