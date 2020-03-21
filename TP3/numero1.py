@@ -86,6 +86,7 @@ if __name__ == '__main__':
     initialState = np.array([0.5, 0.0], float)
     tPoints, fx1Points, fx2Points = vdpOscillator.methodRK45(initialState)
 
-    plt.plot(tPoints, fx1Points)
-    plt.plot(tPoints, fx2Points)
+    plt.plot(tPoints, fx1Points, label='x(t)')
+    plt.plot(tPoints, fx2Points, label=r'$\dot{x}(t)$')
+    plt.legend()
     plt.show()

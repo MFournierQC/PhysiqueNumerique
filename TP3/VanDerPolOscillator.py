@@ -15,12 +15,8 @@ class VanDerPolOscillator:
 
     def methodRK45(self, initialState, t0=0):
         tSpan = [t0, (8 * np.pi)]
-        points = solve_ivp(self.coupledEquation, tSpan, initialState, method='RK45')
+        points = solve_ivp(self.coupledEquation, tSpan, initialState, method='RK45', first_step=0.01, max_step=0.01)
         tPoints = points['t']
         fx1Points = points['y'][0]
         fx2Points = points['y'][1]
         return tPoints, fx1Points, fx2Points
-
-if __name__ == '__main__':
-    vdpOscillator = VanDerPolOscillator(1)
-    initialState = np.array([0.5, 0.0], float)
