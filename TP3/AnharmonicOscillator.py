@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class HarmonicOscillator:
+class AnharmonicOscillator:
     def __init__(self, omega, start, end):
         self.omega = omega
         self.start = start
@@ -11,7 +11,7 @@ class HarmonicOscillator:
         x1 = x[0]
         x2 = x[1]
         fx1 = x2
-        fx2 = -(self.omega ** 2) * x1
+        fx2 = -(self.omega ** 2) * (x1 ** 3)
         return np.array([fx1, fx2], float)
 
     def methodRK4(self, n, x1=0, x2=0, t=0):
