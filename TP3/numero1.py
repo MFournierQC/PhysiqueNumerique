@@ -123,15 +123,15 @@ if __name__ == '__main__':
     plt.show()
 
     # Sous question g :
-    initialStates = np.array([[1.0, 0.0], [2.0, 0.0], [3.0, 0.0]], float)
+    initialState = np.array([1.0, 0.0], float)
+    tPoints, fx1Points, fx2Points = vdpOscillator.methodRK45(initialState)
     fig = plt.figure(figsize=(8, 8))
     ax = fig.add_subplot(111, projection='3d')
-    for initialState in initialStates:
-        tPoints, fx1Points, fx2Points = vdpOscillator.methodRK45(initialState)
-        label = str(initialState)
-        ax.plot(fx1Points, fx2Points, tPoints, label=label)
+    ax.plot(fx1Points, fx2Points, tPoints)
     ax.set_xlabel('x(t)')
     ax.set_ylabel(r'$\dot{x}(t)$')
     ax.set_zlabel('t')
-    plt.legend()
     plt.show()
+
+    for x in fx1Points:
+        if
