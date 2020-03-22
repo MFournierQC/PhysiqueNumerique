@@ -1,6 +1,7 @@
 from TP3.HarmonicOscillator import HarmonicOscillator
 from TP3.AnharmonicOscillator import AnharmonicOscillator
 from TP3.VanDerPolOscillator import VanDerPolOscillator
+from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -107,4 +108,30 @@ if __name__ == '__main__':
     plt.ylabel(r'$\dot{x}(t)$')
     plt.xlabel('t')
     plt.legend(loc='upper right')
+    plt.show()
+
+    # Sous question f :
+    initialStates = np.array([[1.0, 0.0], [2.0, 0.0], [3.0, 0.0]], float)
+    plt.figure(figsize=(8, 4))
+    for initialState in initialStates:
+        tPoints, fx1Points, fx2Points = vdpOscillator.methodRK45(initialState)
+        label = str(initialState)
+        plt.plot(fx1Points, fx2Points, label=label)
+    plt.ylabel(r'$\dot{x}(t)$')
+    plt.xlabel('x(t)')
+    plt.legend(loc='upper right')
+    plt.show()
+
+    # Sous question g :
+    initialStates = np.array([[1.0, 0.0], [2.0, 0.0], [3.0, 0.0]], float)
+    fig = plt.figure(figsize=(8, 8))
+    ax = fig.add_subplot(111, projection='3d')
+    for initialState in initialStates:
+        tPoints, fx1Points, fx2Points = vdpOscillator.methodRK45(initialState)
+        label = str(initialState)
+        ax.plot(fx1Points, fx2Points, tPoints, label=label)
+    ax.set_xlabel('x(t)')
+    ax.set_ylabel(r'$\dot{x}(t)$')
+    ax.set_zlabel('t')
+    plt.legend()
     plt.show()
