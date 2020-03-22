@@ -24,12 +24,38 @@ if __name__ == '__main__':
     plt.close()
 
     # Sous question b :
-    origins = [0.0, 0.5, 1.0, 1.5, 2.0]
+    origins = [0.5, 1.0, 1.5, 2.0]
     plt.figure(figsize=(8, 4))
     for origin in origins:
         label = 'x(0)={}'.replace('{}', str(origin))
         tPoints, xValues, sValues= oscillator.methodRK4(1000, origin, 0.0)
         plt.plot(tPoints, xValues, label=label)
+
+        # Analyse de la période.
+        positions = []
+        for x in range(len(xValues) - 1):
+            try:
+                a = xValues[x]
+                b = xValues[x + 1]
+                if xValues[x] == 0:
+                    positions.append([x, x])
+                elif b * a < 0:
+                    positions.append([x, x + 1])
+            except:
+                pass
+
+        meanValues = []
+        for position in positions:
+            x1 = position[0]
+            x2 = position[1]
+            meanT = (tPoints[x1] + tPoints[x2]) / 2
+            meanValues.append(meanT)
+
+        print('Sous question b :')
+        for meanValue in meanValues:
+            string = 'Temps : ' + str(meanValue)
+            print(string)
+
     plt.ylabel('EDO')
     plt.xlabel('t')
     plt.legend()
@@ -163,6 +189,7 @@ if __name__ == '__main__':
         meanT = (tPoints[x1] + tPoints[x2]) / 2
         meanValues.append([meanX, meanDXDT, meanT])
 
+    print('Sous question g :')
     for meanValue in meanValues:
         string = 'Position : ' + str(meanValue[0]) + ', Vitesse : ' + str(meanValue[1]) + ', Temps : '\
                  + str(meanValue[2])
