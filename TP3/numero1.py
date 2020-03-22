@@ -189,8 +189,8 @@ if __name__ == '__main__':
         meanT = (tPoints[x1] + tPoints[x2]) / 2
         meanValues.append([meanX, meanDXDT, meanT])
 
-    print('Sous question g :')
-    for meanValue in meanValues:
-        string = 'Position : ' + str(meanValue[0]) + ', Vitesse : ' + str(meanValue[1]) + ', Temps : '\
-                 + str(meanValue[2])
-        print(string)
+    with open('TP3_num1g.csv', 'w') as file:
+        file.write('position,vitesse,temps\n')
+        for meanValue in meanValues:
+            string = str(meanValue[0]) + ',' + str(meanValue[1]) + ',' + str(meanValue[2]) +'\n'
+            file.write(string)
