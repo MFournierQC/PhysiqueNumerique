@@ -7,7 +7,7 @@ class Corps():
     Cette classe est un corps qui a une masse, une position et une vitesse, ceci en 2D.
     """
 
-    def __init__(self, masse, position, vitesse, acceleration=np.array([0,0])):
+    def __init__(self, masse, position, vitesse):
         """
         Constructeur de la classe.
         :param position_x (float-like): Position en x du corps.
@@ -18,7 +18,6 @@ class Corps():
         self._masse = masse
         self._position = position
         self._vitesse = vitesse
-        self._acceleration = acceleration
 
     @property
     def masse(self):
@@ -44,14 +43,6 @@ class Corps():
     def vitesse(self, vitesse):
         self._vitesse = vitesse
 
-    @property
-    def acceleration(self):
-        return self._acceleration
-
-    @acceleration.setter
-    def acceleration(self, acceleration):
-        self._acceleration = acceleration
-
 
 class Systeme_de_corps():
     """
@@ -63,26 +54,45 @@ class Systeme_de_corps():
         :param kwargs:
         """
         self.tout_les_corps = kwargs
-        self.acceleration('corps_A')
+        self.temps = []
+        self.positions = [{i: self.tout_les_corps[i].position for i in self.tout_les_corps}]
+        self.vitesses = [{i: self.tout_les_corps[i].vitesse for i in self.tout_les_corps}]
+        self.acceleration = [{i: self.calcul_acceleration(i) for i in self.tout_les_corps}]
 
-    def acceleration(self, cle_masse):
+    def calcul_acceleration(self, cle_masse):
         liste_cle = [*self.tout_les_corps.keys()]
         liste_cle.remove(cle_masse)
 
         acceleration = 0
         for cle_loop in liste_cle:
-            acceleration += 4 * (np.pi ** 2) * self.tout_les_corps[cle_masse].masse * \
-                                      self.tout_les_corps[cle_loop].masse * \
+            acceleration += 4 * (np.pi ** 2) * self.tout_les_corps[cle_loop].masse * \
                                       (np.linalg.norm(self.tout_les_corps[cle_masse].position -
                                                       self.tout_les_corps[cle_loop].position) ** -3) * \
                                       (self.tout_les_corps[cle_masse].position -
                                                       self.tout_les_corps[cle_loop].position)
 
-        self.tout_les_corps[cle_masse].acceleration = acceleration
-        
-    def acceleration_des_masse(self):
-        for i in self.tout_les_corps:
-            pass
+        return acceleration
+
+    def saute_mouton(self, temps_depart, temps_fin, temps_pas):
+
+        self.temps.append(temps_depart)
+
+        for i in range(numpy.ceil((temps_fin - temps_depart)/temps_pas)):
+            self.temps.append(temps_depart + (i + 1) * temps_pas)
+            position = {}
+            vitesse = {}
+            acceleration = {}
+
+            for j in self.tout_les_corps:
+                position_suivante = self.positions[i][j] + self.vitesses[i][j] * temps_pas + 1 / 2 *\
+                                    self.acceleration[i][j] * (temps_pas ** 2)
+
+                vitesse_suivante = self.vitesses[i][j]
+
+            position = {i: Systeme_a.tout_les_corps[i].position for i in self.tout_les_corps}
+
+
+
 
 
 
@@ -93,6 +103,10 @@ if __name__ == "__main__":
     corps_B = Corps(4, np.array([-2, -1]), np.array([0, 0]))
     corps_C = Corps(5, np.array([1, -1]), np.array([0, 0]))
     Systeme_a = Systeme_de_corps(corps_A=corps_A, corps_B=corps_B, corps_C=corps_C)
+    {i: Systeme_a.tout_les_corps[i].position for i in Systeme_a.tout_les_corps}
+    print({i: Systeme_a.tout_les_corps[i].position for i in Systeme_a.tout_les_corps})
     liste_lol = [*Systeme_a.tout_les_corps.keys()]
     liste_lol.remove("corps_A")
-    print(liste_lol)
+
+
+    print(np.array[])
