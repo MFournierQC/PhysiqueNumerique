@@ -20,7 +20,8 @@ if __name__ == '__main__':
     plt.plot(tPoints, np.cos(tPoints))
     plt.ylabel('Solution analytique')
     plt.xlabel('t')
-    plt.show()
+    plt.show(block=False)
+    plt.close()
 
     # Sous question b :
     origins = [0.0, 0.5, 1.0, 1.5, 2.0]
@@ -32,7 +33,8 @@ if __name__ == '__main__':
     plt.ylabel('EDO')
     plt.xlabel('t')
     plt.legend()
-    plt.show()
+    plt.show(block=False)
+    plt.close()
 
     # Sous question c :
     aOscillator = AnharmonicOscillator(1, 0, 50)
@@ -45,7 +47,8 @@ if __name__ == '__main__':
     plt.ylabel('EDO')
     plt.xlabel('t')
     plt.legend()
-    plt.show()
+    plt.show(block=False)
+    plt.close()
 
     # Sous question d :
     origins = [0.0, 0.5, 1.0, 1.5, 2.0]
@@ -66,7 +69,8 @@ if __name__ == '__main__':
     plt.ylabel('EDO Anharmonique')
     plt.xlabel('x')
     plt.legend()
-    plt.show()
+    plt.show(block=False)
+    plt.close()
 
     plt.figure(figsize=(8, 8))
     plt.subplot(2, 1, 1)
@@ -85,7 +89,8 @@ if __name__ == '__main__':
     plt.ylabel('EDO Anharmonique')
     plt.xlabel('x')
     plt.legend()
-    plt.show()
+    plt.show(block=False)
+    plt.close()
 
     # Sous question e :
     vdpOscillator = VanDerPolOscillator(1)
@@ -108,7 +113,8 @@ if __name__ == '__main__':
     plt.ylabel(r'$\dot{x}(t)$')
     plt.xlabel('t')
     plt.legend(loc='upper right')
-    plt.show()
+    plt.show(block=False)
+    plt.close()
 
     # Sous question f :
     initialStates = np.array([[1.0, 0.0], [2.0, 0.0], [3.0, 0.0]], float)
@@ -120,7 +126,8 @@ if __name__ == '__main__':
     plt.ylabel(r'$\dot{x}(t)$')
     plt.xlabel('x(t)')
     plt.legend(loc='upper right')
-    plt.show()
+    plt.show(block=False)
+    plt.close()
 
     # Sous question g :
     initialState = np.array([1.0, 0.0], float)
@@ -131,7 +138,32 @@ if __name__ == '__main__':
     ax.set_xlabel('x(t)')
     ax.set_ylabel(r'$\dot{x}(t)$')
     ax.set_zlabel('t')
-    plt.show()
+    plt.show(block=False)
+    plt.close()
 
-    for x in fx1Points:
-        if
+    # Here, we are looking for values of x(t) where x(t) is equal to 0 or close to that.
+    # This translates to a position x and x + 1 where the sign of x(t) changes.
+    # This allows us to find the period of the cycle as well as values of x(t), dx(t)/dt and t.
+    positions = []
+    for x in range(len(fx1Points) - 1):
+        try:
+            a = fx1Points[x]
+            b = fx1Points[x + 1]
+            if b * a < 0:
+                positions.append([x, x + 1])
+        except:
+            pass
+
+    meanValues = []
+    for position in positions:
+        x1 = position[0]
+        x2 = position[1]
+        meanX = (fx1Points[x1] + fx1Points[x2]) / 2
+        meanDXDT = (fx2Points[x1] + fx2Points[x2]) / 2
+        meanT = (tPoints[x1] + tPoints[x2]) / 2
+        meanValues.append([meanX, meanDXDT, meanT])
+
+    for meanValue in meanValues:
+        string = 'Position : ' + str(meanValue[0]) + ', Vitesse : ' + str(meanValue[1]) + ', Temps : '\
+                 + str(meanValue[2])
+        print(string)
