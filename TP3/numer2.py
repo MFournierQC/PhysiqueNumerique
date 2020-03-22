@@ -1,6 +1,7 @@
 import numpy as np
 import scipy as sc
 import matplotlib.pyplot as plt
+from matplotlib import animation
 
 class Corps():
     """
@@ -77,7 +78,7 @@ class Systeme_de_corps():
 
         self.temps.append(temps_depart)
 
-        for i in range(numpy.ceil((temps_fin - temps_depart)/temps_pas)):
+        for i in range(int(np.ceil((temps_fin - temps_depart)/temps_pas))):
             self.temps.append(temps_depart + (i + 1) * temps_pas)
             position = {}
             vitesse = {}
@@ -86,10 +87,20 @@ class Systeme_de_corps():
             for j in self.tout_les_corps:
                 position_suivante = self.positions[i][j] + self.vitesses[i][j] * temps_pas + 1 / 2 *\
                                     self.acceleration[i][j] * (temps_pas ** 2)
+                self.tout_les_corps[j].position = position_suivante
 
-                vitesse_suivante = self.vitesses[i][j]
+                acceleration_suivante = self.calcul_acceleration(j)
+                vitesse_suivante = self.vitesses[i][j] + 1 / 2 * (self.acceleration[i][j] + acceleration_suivante) \
+                                   * temps_pas
 
-            position = {i: Systeme_a.tout_les_corps[i].position for i in self.tout_les_corps}
+                position[j] = position_suivante
+                vitesse[j] = vitesse_suivante
+                acceleration[j] = acceleration_suivante
+
+            self.positions.append(position)
+            self.vitesses.append(vitesse)
+            self.acceleration.append(acceleration)
+
 
 
 
@@ -103,10 +114,16 @@ if __name__ == "__main__":
     corps_B = Corps(4, np.array([-2, -1]), np.array([0, 0]))
     corps_C = Corps(5, np.array([1, -1]), np.array([0, 0]))
     Systeme_a = Systeme_de_corps(corps_A=corps_A, corps_B=corps_B, corps_C=corps_C)
+    Systeme_a.saute_mouton(0,1,0.001)
+
+    position_des_corps = np.array([[[i["corps_A"][0] for i in Systeme_a.positions],
+                           [i["corps_A"][1] for i in Systeme_a.positions]],
+                          [[i["corps_B"][0] for i in Systeme_a.positions],
+                           [i["corps_B"][1] for i in Systeme_a.positions]],
+                          [[i["corps_C"][0] for i in Systeme_a.positions],
+                           [i["corps_C"][1] for i in Systeme_a.positions]]])
+    print(position_des_corps[2,1,-1])
     {i: Systeme_a.tout_les_corps[i].position for i in Systeme_a.tout_les_corps}
     print({i: Systeme_a.tout_les_corps[i].position for i in Systeme_a.tout_les_corps})
     liste_lol = [*Systeme_a.tout_les_corps.keys()]
     liste_lol.remove("corps_A")
-
-
-    print(np.array[])
