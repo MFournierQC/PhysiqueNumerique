@@ -2,6 +2,7 @@ import numpy as np
 import scipy as sc
 import matplotlib.pyplot as plt
 from matplotlib import animation
+from matplotlib.animation import FuncAnimation
 
 class Corps():
     """
@@ -67,10 +68,9 @@ class Systeme_de_corps():
         acceleration = 0
         for cle_loop in liste_cle:
             acceleration += 4 * (np.pi ** 2) * self.tout_les_corps[cle_loop].masse * \
-                                      (np.linalg.norm(self.tout_les_corps[cle_masse].position -
-                                                      self.tout_les_corps[cle_loop].position) ** -3) * \
-                                      (self.tout_les_corps[cle_masse].position -
-                                                      self.tout_les_corps[cle_loop].position)
+                                      (np.linalg.norm(self.tout_les_corps[cle_loop].position -
+                                                      self.tout_les_corps[cle_masse].position) ** -3) * \
+                                      (self.tout_les_corps[cle_loop].position - self.tout_les_corps[cle_masse].position)
 
         return acceleration
 
@@ -110,20 +110,263 @@ class Systeme_de_corps():
 
 
 if __name__ == "__main__":
-    corps_A = Corps(3, np.array([1, 3]), np.array([0, 0]))
-    corps_B = Corps(4, np.array([-2, -1]), np.array([0, 0]))
-    corps_C = Corps(5, np.array([1, -1]), np.array([0, 0]))
-    Systeme_a = Systeme_de_corps(corps_A=corps_A, corps_B=corps_B, corps_C=corps_C)
-    Systeme_a.saute_mouton(0,1,0.001)
 
-    position_des_corps = np.array([[[i["corps_A"][0] for i in Systeme_a.positions],
-                           [i["corps_A"][1] for i in Systeme_a.positions]],
-                          [[i["corps_B"][0] for i in Systeme_a.positions],
-                           [i["corps_B"][1] for i in Systeme_a.positions]],
-                          [[i["corps_C"][0] for i in Systeme_a.positions],
-                           [i["corps_C"][1] for i in Systeme_a.positions]]])
-    print(position_des_corps[2,1,-1])
-    {i: Systeme_a.tout_les_corps[i].position for i in Systeme_a.tout_les_corps}
-    print({i: Systeme_a.tout_les_corps[i].position for i in Systeme_a.tout_les_corps})
-    liste_lol = [*Systeme_a.tout_les_corps.keys()]
-    liste_lol.remove("corps_A")
+    animation_lecteur = input("Quelle animation voulez vous voir? (1, 2, 3, 4 ou 5) : ")
+
+    ###Numero a.
+    if animation_lecteur == "1":
+        corps_A = Corps(3, np.array([1, 3]), np.array([0, 0]))
+        corps_B = Corps(4, np.array([-2, -1]), np.array([0, 0]))
+        corps_C = Corps(5, np.array([1, -1]), np.array([0, 0]))
+        Systeme_a = Systeme_de_corps(corps_A=corps_A, corps_B=corps_B, corps_C=corps_C)
+        Systeme_a.saute_mouton(0, 1, 0.0001)
+
+        position_des_corps_a = np.array([[[i["corps_A"][0] for i in Systeme_a.positions],
+                               [i["corps_A"][1] for i in Systeme_a.positions]],
+                              [[i["corps_B"][0] for i in Systeme_a.positions],
+                               [i["corps_B"][1] for i in Systeme_a.positions]],
+                              [[i["corps_C"][0] for i in Systeme_a.positions],
+                               [i["corps_C"][1] for i in Systeme_a.positions]]])
+
+
+        fig = plt.figure()
+
+        ax = plt.axes(xlim=(-10, 10), ylim=(-10, 10))
+        line, = ax.plot([], [], 'o', color="red")
+
+
+        def init():
+            line.set_data([], [])
+            return line,
+
+
+        def animate(i):
+            global position_des_corps_a
+            p = position_des_corps_a
+            x = [p[0, 0, i*10], p[1, 0, i*10], p[2, 0, i*10]]
+            y = [p[0, 1, i*10], p[1, 1, i*10], p[2, 1, i*10]]
+            line.set_data(x, y)
+            return line,
+
+
+        ani_a = FuncAnimation(fig, animate, init_func=init,
+                             frames=1000, interval=10, repeat=False)
+        plt.show()
+
+
+    ###Numero b
+    if animation_lecteur == "2":
+        corps_A_b = Corps(3, np.array([1, 3]), np.array([0, 0]))
+        corps_B_b  = Corps(4, np.array([-2, -1]), np.array([0, 0]))
+        corps_C_b  = Corps(5, np.array([1, -1]), np.array([0, 0]))
+        Systeme_b = Systeme_de_corps(corps_A=corps_A_b, corps_B=corps_B_b, corps_C=corps_C_b)
+        Systeme_b.saute_mouton(0, 10, 0.0001)
+
+        position_des_corps_b = np.array([[[i["corps_A"][0] for i in Systeme_b.positions],
+                               [i["corps_A"][1] for i in Systeme_b.positions]],
+                              [[i["corps_B"][0] for i in Systeme_b.positions],
+                               [i["corps_B"][1] for i in Systeme_b.positions]],
+                              [[i["corps_C"][0] for i in Systeme_b.positions],
+                               [i["corps_C"][1] for i in Systeme_b.positions]]])
+
+
+        fig = plt.figure()
+
+        ax = plt.axes(xlim=(-50, 50), ylim=(-50, 50))
+        line, = ax.plot([], [], 'o', color="red")
+
+
+        def init():
+            line.set_data([], [])
+            return line,
+
+
+        def animate(i):
+            global position_des_corps_b
+            p = position_des_corps_b
+            x = [p[0, 0, i*10], p[1, 0, i*10], p[2, 0, i*10]]
+            y = [p[0, 1, i*10], p[1, 1, i*10], p[2, 1, i*10]]
+            line.set_data(x, y)
+            return line,
+
+
+        ani_b = FuncAnimation(fig, animate, init_func=init,
+                             frames=10000, interval=1, repeat=False)
+        plt.show()
+
+    ###Numero c..
+    ###Corps à la position donné dans l'énoncé.
+    if animation_lecteur in ["3", "4", "5"]:
+        corps_A_c = Corps(1, np.array([3.3030197, -0.82771837]), np.array([1.587433767, 1.47221479]))
+        corps_B_c = Corps(1, np.array([-3.3030197, 0.82771837]), np.array([1.587433767, 1.47221479]))
+        corps_C_c = Corps(1, np.array([0, 0]), np.array([-3.174867535, -2.94442961]))
+        Systeme_c = Systeme_de_corps(corps_A=corps_A_c, corps_B=corps_B_c, corps_C=corps_C_c)
+        Systeme_c.saute_mouton(0, 50, 0.001)
+
+        position_des_corps_c = np.array([[[i["corps_A"][0] for i in Systeme_c.positions],
+                               [i["corps_A"][1] for i in Systeme_c.positions]],
+                              [[i["corps_B"][0] for i in Systeme_c.positions],
+                               [i["corps_B"][1] for i in Systeme_c.positions]],
+                              [[i["corps_C"][0] for i in Systeme_c.positions],
+                               [i["corps_C"][1] for i in Systeme_c.positions]]])
+
+    ###Changement de la positon de C
+    if animation_lecteur == "3":
+        corps_A_d = Corps(1, np.array([3.3030197, -0.82771837]), np.array([1.587433767, 1.47221479]))
+        corps_B_d = Corps(1, np.array([-3.3030197, 0.82771837]), np.array([1.587433767, 1.47221479]))
+        corps_C_d = Corps(1, np.array([0 + np.random.uniform(low=-0.1, high=0.1),
+                                       0 + np.random.uniform(low=-0.1, high=0.1)]), np.array([-3.174867535, -2.94442961]))
+        Systeme_d = Systeme_de_corps(corps_A=corps_A_d, corps_B=corps_B_d, corps_C=corps_C_d)
+        Systeme_d.saute_mouton(0, 50, 0.001)
+
+        position_des_corps_d = np.array([[[i["corps_A"][0] for i in Systeme_d.positions],
+                                          [i["corps_A"][1] for i in Systeme_d.positions]],
+                                         [[i["corps_B"][0] for i in Systeme_d.positions],
+                                          [i["corps_B"][1] for i in Systeme_d.positions]],
+                                         [[i["corps_C"][0] for i in Systeme_d.positions],
+                                          [i["corps_C"][1] for i in Systeme_d.positions]]])
+
+
+    ###Changement de la vitesse de C
+    if animation_lecteur == "4":
+        corps_A_e = Corps(1, np.array([3.3030197, -0.82771837]), np.array([1.587433767, 1.47221479]))
+        corps_B_e = Corps(1, np.array([-3.3030197, 0.82771837]), np.array([1.587433767, 1.47221479]))
+        corps_C_e = Corps(1, np.array([0, 0]), np.array([-3.174867535 + np.random.uniform(low=-3.174867535 * 0.01, high=3.174867535 * 0.01),
+                                    -2.94442961 + np.random.uniform(low=-2.94442961 * 0.01, high=2.94442961 * 0.01)]))
+        Systeme_e = Systeme_de_corps(corps_A=corps_A_e, corps_B=corps_B_e, corps_C=corps_C_e)
+        Systeme_e.saute_mouton(0, 50, 0.001)
+
+        position_des_corps_e = np.array([[[i["corps_A"][0] for i in Systeme_e.positions],
+                                          [i["corps_A"][1] for i in Systeme_e.positions]],
+                                         [[i["corps_B"][0] for i in Systeme_e.positions],
+                                          [i["corps_B"][1] for i in Systeme_e.positions]],
+                                         [[i["corps_C"][0] for i in Systeme_e.positions],
+                                          [i["corps_C"][1] for i in Systeme_e.positions]]])
+
+    ###Invertion vitesse
+    if animation_lecteur == "5":
+        corps_A_f = Corps(1, np.array([3.3030197, -0.82771837]), np.array([-1.587433767, -1.47221479]))
+        corps_B_f = Corps(1, np.array([-3.3030197, 0.82771837]), np.array([-1.587433767, -1.47221479]))
+        corps_C_f = Corps(1, np.array([0, 0]), np.array([3.174867535, 2.94442961]))
+        Systeme_f = Systeme_de_corps(corps_A=corps_A_f, corps_B=corps_B_f, corps_C=corps_C_f)
+        Systeme_f.saute_mouton(0, 50, 0.001)
+
+        position_des_corps_f = np.array([[[i["corps_A"][0] for i in Systeme_f.positions],
+                                          [i["corps_A"][1] for i in Systeme_f.positions]],
+                                         [[i["corps_B"][0] for i in Systeme_f.positions],
+                                          [i["corps_B"][1] for i in Systeme_f.positions]],
+                                         [[i["corps_C"][0] for i in Systeme_f.positions],
+                                          [i["corps_C"][1] for i in Systeme_f.positions]]])
+
+
+    if animation_lecteur == "3":
+        ###Changement random de la position de départ de la particule C.
+        fig = plt.figure()
+
+        ax = plt.axes(xlim=(-7.5, 7.5), ylim=(-5, 5))
+
+        lines = [plt.plot([], [], 'o', color=["red", "blue"][_])[0] for _ in range(2)]
+
+
+        def init():
+            for line in lines:
+                line.set_data([], [])
+
+            return lines
+
+
+        def animate(i):
+            global position_des_corps_c
+            global position_des_corps_d
+
+            x = [[position_des_corps_c[0, 0, i*10], position_des_corps_c[1, 0, i*10], position_des_corps_c[2, 0, i*10]],
+                 [position_des_corps_d[0, 0, i*10], position_des_corps_d[1, 0, i*10], position_des_corps_d[2, 0, i*10]]]
+            y = [[position_des_corps_c[0, 1, i*10], position_des_corps_c[1, 1, i*10], position_des_corps_c[2, 1, i*10]],
+                 [position_des_corps_d[0, 1, i*10], position_des_corps_d[1, 1, i*10], position_des_corps_d[2, 1, i*10]]]
+
+            for j, line in enumerate(lines):
+                line.set_data(x[j], y[j])
+
+            return lines
+
+
+        anim_d = animation.FuncAnimation(fig, animate, init_func=init,
+                                       frames=5000, interval=1, repeat=False)
+
+        plt.show()
+
+    ###Changement random de la vitesse de départ de la particule C.
+    if animation_lecteur == "4":
+        fig = plt.figure()
+
+        ax = plt.axes(xlim=(-7.5, 7.5), ylim=(-5, 5))
+
+        lines = [plt.plot([], [], 'o', color=["red", "blue"][_])[0] for _ in range(2)]
+
+
+        def init():
+            for line in lines:
+                line.set_data([], [])
+
+            return lines
+
+
+        def animate(i):
+            global position_des_corps_c
+            global position_des_corps_e
+
+            x = [[position_des_corps_c[0, 0, i*10], position_des_corps_c[1, 0, i*10], position_des_corps_c[2, 0, i*10]],
+                 [position_des_corps_e[0, 0, i*10], position_des_corps_e[1, 0, i*10], position_des_corps_e[2, 0, i*10]]]
+            y = [[position_des_corps_c[0, 1, i*10], position_des_corps_c[1, 1, i*10], position_des_corps_c[2, 1, i*10]],
+                 [position_des_corps_e[0, 1, i*10], position_des_corps_e[1, 1, i*10], position_des_corps_e[2, 1, i*10]]]
+
+            for j, line in enumerate(lines):
+                line.set_data(x[j], y[j])
+
+            return lines
+
+
+        anim_e = animation.FuncAnimation(fig, animate, init_func=init,
+                                       frames=5000, interval=1, repeat=False)
+
+        plt.show()
+
+    ###Changement random de la vitesse de départ de la particule C.
+    if animation_lecteur == "5":
+        fig = plt.figure()
+
+        ax = plt.axes(xlim=(-7.5, 7.5), ylim=(-5, 5))
+
+        lines = [plt.plot([], [], 'o', color=["red", "blue"][_])[0] for _ in range(2)]
+
+
+        def init():
+            for line in lines:
+                line.set_data([], [])
+
+            return lines
+
+
+        def animate(i):
+            global position_des_corps_c
+            global position_des_corps_f
+
+            x = [[position_des_corps_c[0, 0, i * 10], position_des_corps_c[1, 0, i * 10],
+                  position_des_corps_c[2, 0, i * 10]],
+                 [position_des_corps_f[0, 0, i * 10], position_des_corps_f[1, 0, i * 10],
+                  position_des_corps_f[2, 0, i * 10]]]
+            y = [[position_des_corps_c[0, 1, i * 10], position_des_corps_c[1, 1, i * 10],
+                  position_des_corps_c[2, 1, i * 10]],
+                 [position_des_corps_f[0, 1, i * 10], position_des_corps_f[1, 1, i * 10],
+                  position_des_corps_f[2, 1, i * 10]]]
+
+            for j, line in enumerate(lines):
+                line.set_data(x[j], y[j])
+
+            return lines
+
+
+        anim_e = animation.FuncAnimation(fig, animate, init_func=init,
+                                         frames=5000, interval=1, repeat=False)
+
+        plt.show()
