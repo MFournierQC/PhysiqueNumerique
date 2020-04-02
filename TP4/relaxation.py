@@ -8,14 +8,15 @@ class Relaxation:
         self.grid = grid
         self.prevGrid = None
         self.change = np.inf
+        self.iterationCount = 0
 
     def iterate(self):
         newGrid = self.grid.copy()
         self.prevGrid = self.grid.copy()
 
-        r = np.indices(self.grid.shape)[0][2:-2, 1:-1]
-        newGrid[2:-2, 1:-1] = (self.grid[:-4, 1:-1] + self.grid[4:, 1:-1] + self.grid[2:-2, :-2] +
-                               self.grid[2:-2, 2:]) / 4 + (1 / (4 * r)) * (self.grid[3:-1, 1:-1] - self.grid[1:-3, 1:-1])
+        r = np.indices(self.grid.shape)[0][2:-2, 2:-2]
+        newGrid[2:-2, 2:-2] = (self.grid[:-4, 2:-2] + self.grid[4:, 2:-2] + self.grid[2:-2, :-4] +
+                               self.grid[2:-2, 4:]) / 4 + (1 / (4 * r)) * (self.grid[3:-1, 2:-2] - self.grid[1:-3, 2:-2])
 
         self.grid = newGrid
         self.setBoundaris()
@@ -34,3 +35,6 @@ class Relaxation:
     def __call__(self, precision):
         while self.change > precision:
             self.iterate()
+            self.iterationCount += 1
+
+        print(f'Changement: {self.change:.5f}% après {self.iterationCount} itérations')
