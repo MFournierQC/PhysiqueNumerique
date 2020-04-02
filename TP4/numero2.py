@@ -26,7 +26,7 @@ if __name__ == '__main__':
     plt.imshow(grid)
     plt.show()
 
-    relax = Relaxation(grid, 2000)
-    relax(2000)
+    relax = Relaxation(grid)
+    relax(0.0001)
     plt.imshow(relax.grid)
     plt.show()
