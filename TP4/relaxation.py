@@ -45,7 +45,8 @@ class Relaxation:
 
         r = np.indices(self.grid.shape)[0][2:-2, 2:-2]
         newGrid[2:-2, 2:-2] = (self.grid[:-4, 2:-2] + self.grid[4:, 2:-2] + self.grid[2:-2, :-4] +
-                               self.grid[2:-2, 4:]) / 4 + (1 / (4 * r)) * (self.grid[3:-1, 2:-2] - self.grid[1:-3, 2:-2])
+                               self.grid[2:-2, 4:]) / 4 + (1 / (4 * r)) * (self.grid[3:-1, 2:-2] -
+                                                                           self.grid[1:-3, 2:-2])
 
         self.grid = newGrid
         self.setBoundaris()
@@ -64,7 +65,8 @@ class Relaxation:
 
         r = np.indices(self.grid.shape)[0][2:-2, 2:-2]
         self.grid[2:-2, 2:-2] = (self.grid[:-4, 2:-2] + self.grid[4:, 2:-2] + self.grid[2:-2, :-4] +
-                               self.grid[2:-2, 4:]) / 4 + (1 / (4 * r)) * (self.grid[3:-1, 2:-2] - self.grid[1:-3, 2:-2])
+                                 self.grid[2:-2, 4:]) / 4 + (1 / (4 * r)) * (self.grid[3:-1, 2:-2] -
+                                                                             self.grid[1:-3, 2:-2])
 
         self.setBoundaris()
         self.change = self.calculateChange()
@@ -83,8 +85,9 @@ class Relaxation:
 
         r = np.indices(self.grid.shape)[0][2:-2, 2:-2]
         newGrid[2:-2, 2:-2] = (self.grid[:-4, 2:-2] + self.grid[4:, 2:-2] + self.grid[2:-2, :-4] +
-                               self.grid[2:-2, 4:]) / 4 + (1 / (4 * r)) * (self.grid[3:-1, 2:-2] - self.grid[1:-3, 2:-2])
-        overRelaxedGrid = self.prevGrid + (1 + omega) * (newGrid - self.prevGrid)
+                               self.grid[2:-2, 4:]) / 4 + (1 / (4 * r)) * (self.grid[3:-1, 2:-2] -
+                                                                           self.grid[1:-3, 2:-2])
+        overRelaxedGrid = (1 + omega) * newGrid - omega * self.prevGrid
 
         self.grid = overRelaxedGrid
         self.setBoundaris()
