@@ -4,29 +4,35 @@ import matplotlib.pyplot as plt
 
 
 if __name__ == '__main__':
-    # Essai 1
-    #rows = 200
-    #columns = 1000
-    #grid = np.ndarray(shape=(rows, columns), dtype=float)
-    #grid[:89, :].fill(0)
-    #grid[90:110, :].fill(150)
-    #grid[111:, :].fill(0)
-
-    #relax = Relaxation(grid, 5000)
-    #relax(5000)
-    #plt.imshow(relax.getGrid())
-    #plt.show()
-
     rows = 20
     columns = 100
     grid = np.ndarray(shape=(rows, columns), dtype=float)
     grid[:3, :].fill(150)
     grid[4:, :].fill(0)
 
-    plt.imshow(grid)
+    # Normal relaxation.
+    relax = Relaxation(grid)
+    relax.relaxation(0.000001)
+    iterations, relaxationChanges = relax.getChangesPerIter()
+
+    plt.imshow(relax.grid)
     plt.show()
 
+    # Gauss-Seidel Relaxation.
+    #relax = Relaxation(grid)
+    #relax.relaxationGaussSeidel(0.000001)
+    #plt.imshow(relax.grid)
+    #plt.show()
+
+    # Over relaxation.
     relax = Relaxation(grid)
-    relax(0.0001)
+    relax.overRelaxation(0.000001, 0.0085)
+    overIterations, overRelaxationChanges = relax.getChangesPerIter()
+
     plt.imshow(relax.grid)
+    plt.show()
+
+    # Plot speed of convergence.
+    plt.plot(iterations, relaxationChanges)
+    plt.plot(overIterations, overRelaxationChanges)
     plt.show()
