@@ -13,7 +13,7 @@ if __name__ == '__main__':
     # Normal relaxation.
     relax = Relaxation(grid)
     relax.relaxation(0.000001)
-    iterations, relaxationChanges = relax.getChangesPerIter()
+    iterations, relaxationChanges, relaxationTimes = relax.performances()
 
     plt.imshow(relax.grid)
     plt.show()
@@ -27,12 +27,20 @@ if __name__ == '__main__':
     # Over relaxation.
     relax = Relaxation(grid)
     relax.overRelaxation(0.000001, 0.0085)
-    overIterations, overRelaxationChanges = relax.getChangesPerIter()
+    overIterations, overRelaxationChanges, overRelaxationTimes = relax.performances()
 
     plt.imshow(relax.grid)
     plt.show()
 
     # Plot speed of convergence.
-    plt.plot(iterations, relaxationChanges)
-    plt.plot(overIterations, overRelaxationChanges)
+    # Changes per iterations.
+    plt.plot(iterations, relaxationChanges, label='Relaxation')
+    plt.plot(overIterations, overRelaxationChanges, label='Sur-relaxation')
+    plt.legend()
+    plt.show()
+
+    # Cumulative time of iterations per iterations.
+    plt.plot(iterations, relaxationTimes, label='Relaxation')
+    plt.plot(overIterations, overRelaxationTimes, label='Sur-relaxation')
+    plt.legend()
     plt.show()

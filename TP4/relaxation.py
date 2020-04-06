@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 
 class Relaxation:
@@ -12,10 +13,11 @@ class Relaxation:
 
         self.iterations = []
         self.changePerIteration = []
+        self.timePerIteration = []
 
     # Basics functions for the class.
-    def getChangesPerIter(self):
-        return self.iterations, self.changePerIteration
+    def performances(self):
+        return self.iterations, self.changePerIteration, np.cumsum(self.timePerIteration)
 
     def calculateChange(self):
         oldGrid = self.prevGrid.copy().flatten()
@@ -34,7 +36,10 @@ class Relaxation:
     # Functions for a basic relaxation.
     def relaxation(self, deltaV):
         while self.change > deltaV:
+            begin = time.perf_counter()
             self.iterate()
+            end = time.perf_counter()
+            self.timePerIteration.append(end - begin)
             self.iterationCount += 1
 
         print(f'Relaxation : Changement de {self.change * 100:.7f}% après {self.iterationCount} itérations')
@@ -55,7 +60,10 @@ class Relaxation:
     # Functions for a Gauss-Seidel relaxation.
     def relaxationGaussSeidel(self, deltaV):
         while self.change > deltaV:
+            begin = time.perf_counter()
             self.iterateGaussSeidel()
+            end = time.perf_counter()
+            self.timePerIteration.append(end - begin)
             self.iterationCount += 1
 
         print(f'Gauss-Seidel : Changement de {self.change * 100:.7f}% après {self.iterationCount} itérations')
@@ -74,7 +82,10 @@ class Relaxation:
     # Functions for an over relaxation.
     def overRelaxation(self, deltaV, omega):
         while self.change > deltaV:
+            begin = time.perf_counter()
             self.iterateOverRelaxation(omega)
+            end = time.perf_counter()
+            self.timePerIteration.append(end - begin)
             self.iterationCount += 1
 
         print(f'Sur-Relaxation : Changement de {self.change * 100:.7f}% après {self.iterationCount} itérations')
