@@ -1,6 +1,8 @@
 import numpy as np
 import time
 
+import matplotlib.pyplot as plt
+
 
 class Relaxation:
     def __init__(self, grid: np.ndarray):
@@ -14,6 +16,9 @@ class Relaxation:
         self.iterations = []
         self.changePerIteration = []
         self.timePerIteration = []
+
+        self.mask = None
+        self.notMask = None
 
     # Basics functions for the class.
     def performances(self):
@@ -69,13 +74,22 @@ class Relaxation:
         print(f'Gauss-Seidel : Changement de {self.change * 100:.7f}% après {self.iterationCount} itérations')
 
     def iterateGaussSeidel(self):
+        newGrid = self.grid.copy()
         self.prevGrid = self.grid.copy()
 
-        r = np.indices(self.grid.shape)[0][2:-2, 2:-2]
-        self.grid[2:-2, 2:-2] = (self.grid[:-4, 2:-2] + self.grid[4:, 2:-2] + self.grid[2:-2, :-4] +
-                                 self.grid[2:-2, 4:]) / 4 + (1 / (4 * r)) * (self.grid[3:-1, 2:-2] -
-                                                                             self.grid[1:-3, 2:-2])
+        indices = np.indices(self.grid.shape)
+        r = indices[0][1:-1, 1:-1]
+        mask = (indices[0] % 2 == 0) & (indices[1] % 2 == 0)
+        notMask = ~mask
+        mask[1::2] = notMask[:-1:2]
+        self.mask = mask[1:-1, 1:-1]
+        self.notMask = ~mask
 
+        newGrid[2:-2, 2:-2] = (self.grid[:-4, 2:-2] + self.grid[4:, 2:-2] + self.grid[2:-2, :-4] +
+                               self.grid[2:-2, 4:]) / 4 + (1 / (4 * r)) * (self.grid[3:-1, 2:-2] -
+                                                                           self.grid[1:-3, 2:-2])
+
+        self.grid = newGrid
         self.setBoundaris()
         self.change = self.calculateChange()
 
