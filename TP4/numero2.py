@@ -1,4 +1,4 @@
-from TP4.relaxation import Relaxation
+from relaxation import Relaxation
 import numpy as np
 import matplotlib.pyplot as plt
 
