@@ -35,8 +35,8 @@ class Relaxation:
         return change
 
     def setBoundaris(self):
-        self.grid[:3, :].fill(150)
-        self.grid[19, :].fill(0)
+        self.grid[:9, :].fill(150)
+        self.grid[99, :].fill(0)
 
     # Functions for a basic relaxation.
     def relaxation(self, deltaV):
@@ -53,10 +53,10 @@ class Relaxation:
         newGrid = self.grid.copy()
         self.prevGrid = self.grid.copy()
 
-        r = np.indices(self.grid.shape)[0][2:-2, 2:-2]
-        newGrid[2:-2, 2:-2] = (self.grid[:-4, 2:-2] + self.grid[4:, 2:-2] + self.grid[2:-2, :-4] +
-                               self.grid[2:-2, 4:]) / 4 + (1 / (4 * r)) * (self.grid[3:-1, 2:-2] -
-                                                                           self.grid[1:-3, 2:-2])
+        r = np.indices(self.grid.shape)[0][1:-1, 1:-1]
+        newGrid[1:-1, 1:-1] = (self.grid[:-2, 1:-1] + self.grid[2:, 1:-1] + self.grid[1:-1, :-2] +
+                               self.grid[1:-1, 2:]) / 4 + (1 / (8 * r)) * (self.grid[2:, 1:-1] -
+                                                                           self.grid[:-2, 1:-1])
 
         self.grid = newGrid
         self.setBoundaris()
@@ -77,17 +77,23 @@ class Relaxation:
         newGrid = self.grid.copy()
         self.prevGrid = self.grid.copy()
 
-        indices = np.indices(self.grid.shape)
+        indices = np.indices(newGrid.shape)
         r = indices[0][1:-1, 1:-1]
         mask = (indices[0] % 2 == 0) & (indices[1] % 2 == 0)
         notMask = ~mask
         mask[1::2] = notMask[:-1:2]
         self.mask = mask[1:-1, 1:-1]
-        self.notMask = ~mask
+        self.notMask = ~self.mask
 
-        newGrid[2:-2, 2:-2] = (self.grid[:-4, 2:-2] + self.grid[4:, 2:-2] + self.grid[2:-2, :-4] +
-                               self.grid[2:-2, 4:]) / 4 + (1 / (4 * r)) * (self.grid[3:-1, 2:-2] -
-                                                                           self.grid[1:-3, 2:-2])
+        # Calcul du masque.
+        arrayCaculated = (self.grid[:-2, 1:-1] + self.grid[2:, 1:-1] + self.grid[1:-1, :-2] + self.grid[1:-1, 2:]) / 4 \
+                         + (1 / (8 * r)) * (self.grid[2:, 1:-1] - self.grid[:-2, 1:-1])
+        newGrid[1:-1, 1:-1][self.mask] = arrayCaculated[self.mask]
+
+        # Calcul de l'antimasque. A corriger!
+        arrayCaculated = (newGrid[:-2, 1:-1] + newGrid[2:, 1:-1] + newGrid[1:-1, :-2] + newGrid[1:-1, 2:]) / 4 \
+                         + (1 / (8 * r)) * (self.grid[2:, 1:-1] - self.grid[:-2, 1:-1])
+        newGrid[1:-1, 1:-1][self.notMask] = arrayCaculated[self.notMask]
 
         self.grid = newGrid
         self.setBoundaris()
@@ -108,10 +114,10 @@ class Relaxation:
         newGrid = self.grid.copy()
         self.prevGrid = self.grid.copy()
 
-        r = np.indices(self.grid.shape)[0][2:-2, 2:-2]
-        newGrid[2:-2, 2:-2] = (self.grid[:-4, 2:-2] + self.grid[4:, 2:-2] + self.grid[2:-2, :-4] +
-                               self.grid[2:-2, 4:]) / 4 + (1 / (4 * r)) * (self.grid[3:-1, 2:-2] -
-                                                                           self.grid[1:-3, 2:-2])
+        r = np.indices(self.grid.shape)[0][1:-1, 1:-1]
+        newGrid[1:-1, 1:-1] = (self.grid[:-2, 1:-1] + self.grid[2:, 1:-1] + self.grid[1:-1, :-2] +
+                               self.grid[1:-1, 2:]) / 4 + (1 / (8 * r)) * (self.grid[2:, 1:-1] -
+                                                                           self.grid[:-2, 1:-1])
         overRelaxedGrid = (1 + omega) * newGrid - omega * self.prevGrid
 
         self.grid = overRelaxedGrid
