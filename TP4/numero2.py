@@ -10,6 +10,11 @@ if __name__ == '__main__':
     grid[:9, :].fill(150)
     grid[10:, :].fill(0)
 
+    # Grid before relaxation.
+    plt.imshow(grid)
+    plt.colorbar(orientation='horizontal')
+    plt.show()
+
     # Normal relaxation.
     print("Normal Relaxation Method.")
     relax = Relaxation(grid)
