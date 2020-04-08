@@ -30,7 +30,7 @@ class Relaxation:
         change = np.sqrt(np.sum((oldGrid - newGrid) ** 2))
 
         self.iterations.append(self.iterationCount)
-        self.changePerIteration.append(change)
+        self.changePerIteration.append(change * 100)
 
         return change
 
@@ -102,6 +102,10 @@ class Relaxation:
     # Functions for an over relaxation.
     def overRelaxation(self, deltaV, omega):
         while self.change > deltaV:
+            # A quick check to make sure the iterations don't go too overboard.
+            if self.iterationCount > 100000:
+                break
+
             begin = time.perf_counter()
             self.iterateOverRelaxation(omega)
             end = time.perf_counter()
