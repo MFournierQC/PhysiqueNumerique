@@ -45,6 +45,8 @@ if __name__ == '__main__':
     plt.plot(iterations, relaxationChanges, label='Relaxation')
     plt.plot(overIterations, overRelaxationChanges, label='Sur-relaxation')
     plt.plot(gsIterations, gsRelaxationChanges, label='Gauss-Seidel')
+    plt.ylabel('Changement [%]')
+    plt.xlabel('Itération [-]')
     plt.legend()
     plt.show()
 
@@ -52,5 +54,7 @@ if __name__ == '__main__':
     plt.plot(iterations, relaxationTimes, label='Relaxation')
     plt.plot(overIterations, overRelaxationTimes, label='Sur-relaxation')
     plt.plot(gsIterations, gsRelaxationTimes, label='Gauss-Seidel')
+    plt.ylabel('Temps cumulé [s]')
+    plt.xlabel('Itération [-]')
     plt.legend()
     plt.show()
