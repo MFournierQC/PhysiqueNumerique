@@ -30,7 +30,7 @@ class Relaxation:
         change = np.sqrt(np.sum((oldGrid - newGrid) ** 2))
 
         self.iterations.append(self.iterationCount)
-        self.changePerIteration.append(change)
+        self.changePerIteration.append(change * 100)
 
         return change
 
