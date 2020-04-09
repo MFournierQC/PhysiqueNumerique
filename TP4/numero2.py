@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     # Normal relaxation.
     print("Normal Relaxation Method.")
-    relax = Relaxation(grid)
+    relax = Relaxation(grid, "2")
     relax.relaxation(0.001)
     iterations, relaxationChanges, relaxationTimes = relax.performances()
 
@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     # Gauss-Seidel Relaxation.
     print("Gauss-Seidel Relaxation Method.")
-    relax = Relaxation(grid)
+    relax = Relaxation(grid, "2")
     relax.relaxationGaussSeidel(0.001)
     gsIterations, gsRelaxationChanges, gsRelaxationTimes = relax.performances()
 
@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
     # Over relaxation.
     print("Over Relaxation Method.")
-    relax = Relaxation(grid)
+    relax = Relaxation(grid, "2")
     relax.overRelaxation(0.001, 0.0001)
     overIterations, overRelaxationChanges, overRelaxationTimes = relax.performances()
 

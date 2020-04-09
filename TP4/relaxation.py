@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 class Relaxation:
-    def __init__(self, grid: np.ndarray):
+    def __init__(self, grid: np.ndarray, numero):
         # The original and current grid.
         self.originalGrid = grid.copy()
         self.grid = grid
@@ -19,6 +19,8 @@ class Relaxation:
 
         self.mask = None
         self.notMask = None
+
+        self.numero = numero
 
     # Basics functions for the class.
     def performances(self):
@@ -35,8 +37,21 @@ class Relaxation:
         return change
 
     def setBoundaris(self):
-        self.grid[:9, :].fill(150)
-        self.grid[99, :].fill(0)
+        if self.numero == "2":
+            self.grid[:9, :].fill(150)
+            self.grid[99, :].fill(0)
+
+        if self.numero == "3b":
+            self.grid[:9, 30:-30].fill(150)
+            self.grid[99, 0:90].fill(0)
+            self.grid[49:, 90:270].fill(0)
+            self.grid[99, 270:].fill(0)
+
+        if self.numero == "3c":
+            self.grid[:9, 20:-10].fill(150)
+            self.grid[99, 0:99].fill(0)
+            self.grid[79:, 100:219].fill(0)
+            self.grid[39:, 220:].fill(0)
 
     # Functions for a basic relaxation.
     def relaxation(self, deltaV):
